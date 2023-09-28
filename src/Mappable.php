@@ -500,7 +500,7 @@ trait Mappable
      */
     protected function parseEnums()
     {
-        $this->mappedAttributes = [];
+        $this->enumAttributes = [];
 
         foreach ($this->getEnums() as $attribute => $enum) {
             $this->enumAttributes[$attribute] = $enum;
