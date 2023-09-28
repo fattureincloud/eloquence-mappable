@@ -124,7 +124,7 @@ class Hooks
         return function ($next, $value, $args) {
             $key = $args->get('key');
 
-            if ($this->hasMapping($key)) {
+            if ($this->isEnum($key) || $this->hasMapping($key)) {
                 return $this->setMappedAttribute($key, $value);
             }
 
