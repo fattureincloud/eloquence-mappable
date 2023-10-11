@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 /**
  * @property array $maps
+ * @property array $enums
  */
 trait Mappable
 {
@@ -25,6 +26,13 @@ trait Mappable
      * @var array
      */
     protected $mappedAttributes;
+
+    /**
+     * Array of enum attributes.
+     *
+     * @var array
+     */
+    protected $enumAttributes;
 
     /**
      * Related mapped objects to save along with the mappable instance.
@@ -449,7 +457,22 @@ trait Mappable
             $this->parseMappings();
         }
 
-        return array_key_exists((string) $key, $this->mappedAttributes);
+        return isset($this->mappedAttributes[(string) $key]);
+    }
+
+    /**
+     * Determine whether an attribute is an enum.
+     *
+     * @param  string $key
+     * @return bool
+     */
+    public function isEnum($key)
+    {
+        if (is_null($this->enumAttributes)) {
+            $this->parseEnums();
+        }
+
+        return isset($this->enumAttributes[(string) $key]);
     }
 
     /**
@@ -467,6 +490,20 @@ trait Mappable
             } else {
                 $this->mappedAttributes[$attribute] = $mapping;
             }
+        }
+    }
+
+    /**
+     * Parse defined enumn in a array.
+     *
+     * @return void
+     */
+    protected function parseEnums()
+    {
+        $this->enumAttributes = [];
+
+        foreach ($this->getEnums() as $attribute => $enum) {
+            $this->enumAttributes[$attribute] = $enum;
         }
     }
 
@@ -606,5 +643,15 @@ trait Mappable
     public function getMaps()
     {
         return (property_exists($this, 'maps')) ? $this->maps : [];
+    }
+
+    /**
+     * Get the array of enums.
+     *
+     * @return array
+     */
+    public function getEnums()
+    {
+        return (property_exists($this, 'enums')) ? $this->enums : [];
     }
 }
