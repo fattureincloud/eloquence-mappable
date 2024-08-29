@@ -416,6 +416,9 @@ class MappableStub
         'related.far' => ['far_field'],     // $this->related->far->far_field
     ];
 
+    public $bar;
+    public $related;
+
     public function __construct()
     {
         $this->bar = $this->getRelatedStub([

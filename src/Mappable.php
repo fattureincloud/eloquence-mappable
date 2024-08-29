@@ -374,7 +374,7 @@ trait Mappable
     protected function getMappedWhereConstraint($method, ArgumentBag $args)
     {
         return function ($query) use ($method, $args) {
-            call_user_func_array([$query, $method], $args->all());
+            call_user_func_array([$query, $method], array_values($args->all()));
         };
     }
 
